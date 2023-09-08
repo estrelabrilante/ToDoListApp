@@ -14,26 +14,20 @@ class AddVC: UIViewController,UITextFieldDelegate{
     @IBOutlet weak var inputTextField: UITextField!
     
     @IBAction func doneButtonClicked(_ sender: Any) {
-        print("Button clicked")
-        if let input = inputTextField.text{
-            print(input)
-            itemArray.append(input)
+        //pullback from storage if there is items
+        let itemArrayStored = defaults.object(forKey: "ToDoList")
+        if let tempItems = itemArrayStored {
+            itemArray = tempItems as! [String]
+            itemArray.append(inputTextField.text!)
+            print("itemarray is:")
             print(itemArray)
-            defaults.set(itemArray, forKey: "TodoListArray")
         }
-        //permanent storage of user added
-//        var items : [String]
-//        let itemObject = UserDefaults.standard.object(forKey: "items")
-//        if let tempItems = itemObject as? [String]{
-//            items = tempItems
-//            items.append(inputTextField.text!)
-//        }
-//        else{
-//            items = [inputTextField.text!]
-//        }
-//        UserDefaults.standard.set(items, forKey: "items")
-//        inputTextField.text = ""
-//        *****************************************************************
+        else
+        {
+            itemArray.append(inputTextField.text!)
+        }
+        defaults.set(itemArray, forKey: "ToDoList")
+        inputTextField.text = ""
        
         
     }

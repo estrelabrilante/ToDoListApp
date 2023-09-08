@@ -10,38 +10,43 @@ import UIKit
 class ListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     var items : [String] = []
     @IBOutlet weak var tableview: UITableView!
-    //var items : NSMutableArray = []
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "List")
-        cell.textLabel?.text = items[indexPath.row] as? String
+        cell.textLabel?.text = items[indexPath.row] 
         return cell
     }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        //permanent storage of user added
-        
-        items = UserDefaults.standard.array(forKey: "TodoListArray") as! [String]
-        tableview.reloadData()
+       
         }
         
             
     override func viewDidAppear(_: Bool){
-        
-//        let itemObject = UserDefaults.standard.object(forKey: "items")
-//        if let tempItems = itemObject as? NSArray{
-//            items = tempItems as! NSMutableArray
-//            tableview.reloadData()
-//        }
-        
+
+        let itemArrayStored =  UserDefaults.standard.object(forKey: "ToDoList")
+        if let tempItems = itemArrayStored {
+            items = tempItems as! [String]
+            print("items is")
+          print(items)
+        }
+        tableview.reloadData()
     }
+    //deleting row from tableview
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+       if editingStyle == .delete {
+         print("Deleted")
+           items.remove(at: indexPath.row)
+           tableview.reloadData()
+           UserDefaults.standard.set(items, forKey: "ToDoList")
+       }
+     }
+     
     
 }
